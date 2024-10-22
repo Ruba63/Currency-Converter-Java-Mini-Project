@@ -97,42 +97,42 @@ public class MainWindow extends JFrame {
 		
 		// Label "To"
 		JLabel lblTo = new JLabel(BUNDLE.getString("MainWindow.lblTo.text")); //$NON-NLS-1$
-		lblTo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTo.setBounds(66, 54, 26, 15);
-		contentPane.add(lblTo);
+		lblTo.setHorizontalAlignment(SwingConstants.RIGHT); //Align text to the right
+		lblTo.setBounds(66, 54, 26, 15); //Set position and size
+		contentPane.add(lblTo); 
 		
 		// ComboBox of the second currency
 		final JComboBox<String> comboBoxCountry2 = new JComboBox<String>();
-		comboBoxCountry2.setBounds(147, 47, 240, 28);
-		populate(comboBoxCountry2, currencies);
+		comboBoxCountry2.setBounds(147, 47, 240, 28); // Set position and size
+		populate(comboBoxCountry2, currencies); // Populate with currency names
 		contentPane.add(comboBoxCountry2);
 		
 		// Label "Amount"
 		final JLabel lblAmount = new JLabel(BUNDLE.getString("MainWindow.lblAmount.text")); //$NON-NLS-1$
-		lblAmount.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAmount.setBounds(23, 108, 69, 15);
+		lblAmount.setHorizontalAlignment(SwingConstants.RIGHT); //Align text to the right
+		lblAmount.setBounds(23, 108, 69, 15); //Set Position and size
 		contentPane.add(lblAmount);
 		
 		// Textfield where the user 
 		fieldAmount = new JTextField();
-		fieldAmount.setText("0.00");
-		fieldAmount.setBounds(147, 101, 103, 29);
+		fieldAmount.setText("0.00"); //Default value
+		fieldAmount.setBounds(147, 101, 103, 29); //Set Position and size
 		contentPane.add(fieldAmount);
 		fieldAmount.setColumns(10);
-		fieldAmount.setDocument(new JTextFieldLimit(8));
+		fieldAmount.setDocument(new JTextFieldLimit(8)); //Limit text field to 8 characters
      	
 		// Label displaying result of conversion
 		final JLabel lblResult = new JLabel("");
-		lblResult.setHorizontalAlignment(SwingConstants.LEFT);
-		lblResult.setBounds(147, 188, 428, 38);
+		lblResult.setHorizontalAlignment(SwingConstants.LEFT); //Align text to the left
+		lblResult.setBounds(147, 188, 428, 38); //Set position and size
 		contentPane.add(lblResult);
 		
 		// Button "Convert"
 		JButton btnConvert = new JButton(BUNDLE.getString("MainWindow.btnConvert.text")); //$NON-NLS-1$
-		btnConvert.setBounds(147, 142, 129, 38);
+		btnConvert.setBounds(147, 142, 129, 38); // Set position and size
 		btnConvert.addActionListener(new ActionListener() {
 	        @Override
-	        public void actionPerformed(ActionEvent arg0) {
+	        public void actionPerformed(ActionEvent arg0) { //Get selected currencies and amount
 	        	String nameCurrency1 = comboBoxCountry1.getSelectedItem().toString();
 	        	String nameCurrency2 = comboBoxCountry2.getSelectedItem().toString();
 	        	String result;
@@ -140,21 +140,22 @@ public class MainWindow extends JFrame {
 	        	String formattedAmount; 
 	        	Double price;
 	        	Double amount = 0.0;
-	        	DecimalFormat format = new DecimalFormat("#0.00");
+	        	DecimalFormat format = new DecimalFormat("#0.00"); //Format to two decimal places
 	        	
 	        	try {
-	        		amount = Double.parseDouble( fieldAmount.getText() ) ;
+	        		amount = Double.parseDouble( fieldAmount.getText() ) ; //Parse amount
 	        	} catch (NumberFormatException e) {
 	        	    e.printStackTrace();
-	        	    amount = 0.0;
+	        	    amount = 0.0; //Default to 0 if invalid input
 	        	}
-	        	
+	        	//Perform currency conversion
 	        	price = convert(nameCurrency1, nameCurrency2, currencies, amount);
 	        	
-	        	// Format numbers to avoid "E7" problem
+	        	// Format numbers to avoid scientific notation issues
 	        	formattedPrice = format.format(price);
 	        	formattedAmount = format.format(amount);
-	        	
+
+			//Display result of conversion
 	        	result = formattedAmount + " " + nameCurrency1 + " = " + formattedPrice + " " + nameCurrency2;
 	        	lblResult.setText(result);	        	
 	        }
@@ -162,14 +163,14 @@ public class MainWindow extends JFrame {
 		contentPane.add(btnConvert);
 	}
 	
-	// Fill comboBox with currencies name
+	// Method to fill comboBox with currency names
 	public static void populate(JComboBox<String> comboBox, ArrayList<Currency> currencies) {
 		for (Integer i = 0; i < currencies.size(); i++) {
-			comboBox.addItem( currencies.get(i).getName() );
+			comboBox.addItem( currencies.get(i).getName() ); // Add each currency name
 		}		
 	}
 	
-	// Find the short name and the exchange value of the second currency
+	// Method to convert between two currencies
 	public static Double convert(String currency1, String currency2, ArrayList<Currency> currencies, Double amount) {
 		String shortNameCurrency2 = null;
 		Double exchangeValue;
@@ -183,17 +184,17 @@ public class MainWindow extends JFrame {
 			}
 		}
 		
-		// Find exchange value and call convert() to calcul the new price
+		// Find exchange rate and perform conversion
 		if (shortNameCurrency2 != null) {
 			for (Integer i = 0; i < currencies.size(); i++) {
 				if (currencies.get(i).getName() == currency1) {
 					exchangeValue = currencies.get(i).getExchangeValues().get(shortNameCurrency2);
-					price = Currency.convert(amount, exchangeValue);
+					price = Currency.convert(amount, exchangeValue); //Calculate the converted amount
 					break;
 				}
 			}
 		}
 		
-		return price;
+		return price; // Return the converted value
 	}
 }
