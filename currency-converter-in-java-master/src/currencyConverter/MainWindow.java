@@ -29,40 +29,42 @@ public class MainWindow extends JFrame {
 	 * Create the mainWindow frame
 	 */
 	public MainWindow() {
+		// Set window title and basic configurations
 		setTitle(BUNDLE.getString("MainWindow.this.title")); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 589, 300);
-		setLocationRelativeTo(null);
-		setResizable( false );
+		setLocationRelativeTo(null);  // Center the window
+		setResizable(false);  // Disable resizing
 		
-		// Create menu bar
+		// Create the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		// "File" menu
+		// "File" menu creation
 		JMenu mnFile = new JMenu(BUNDLE.getString("MainWindow.mnFile.text")); //$NON-NLS-1$
-		mnFile.setMnemonic(KeyEvent.VK_F);
+		mnFile.setMnemonic(KeyEvent.VK_F);  // Mnemonic for file menu
 		menuBar.add(mnFile);
 		
-		// "Quit" menu item
+		// "Quit" menu item in File menu
 		JMenuItem mntmQuit = new JMenuItem(BUNDLE.getString("MainWindow.mntmQuit.text")); //$NON-NLS-1$
-		mntmQuit.setMnemonic(KeyEvent.VK_Q);		
+		mntmQuit.setMnemonic(KeyEvent.VK_Q);  // Mnemonic for quit
 		mntmQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+				System.exit(0);  // Quit the application
 			}
-		});		
+		});
 		mnFile.add(mntmQuit);
 		
-		// "Help" menu
+		// "Help" menu creation
 		JMenu mnHelp = new JMenu(BUNDLE.getString("MainWindow.mnHelp.text")); //$NON-NLS-1$
-		mnHelp.setMnemonic(KeyEvent.VK_H);
+		mnHelp.setMnemonic(KeyEvent.VK_H);  // Mnemonic for help menu
 		menuBar.add(mnHelp);
 		
-		// "About" menu item
-		JMenuItem mntmAbout = new JMenuItem(BUNDLE.getString("MainWindow.mntmAbout.text"));		 //$NON-NLS-1$
+		// "About" menu item in Help menu
+		JMenuItem mntmAbout = new JMenuItem(BUNDLE.getString("MainWindow.mntmAbout.text")); //$NON-NLS-1$
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Open the About window
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
@@ -73,11 +75,11 @@ public class MainWindow extends JFrame {
 					}
 				});
 			}
-		});		
-		mntmAbout.setMnemonic(KeyEvent.VK_A);		
+		});
+		mntmAbout.setMnemonic(KeyEvent.VK_A);  // Mnemonic for about
 		mnHelp.add(mntmAbout);
 		
-		// Window components
+		// Window layout and components
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
